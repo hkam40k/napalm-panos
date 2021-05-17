@@ -456,7 +456,7 @@ class PANOSDriver(NetworkDriver):
             else:
                 raise ReplaceConfigException("Error while loading backup config.")
 
-    def rollback(self):
+    def rollback(self, message="", **kwargs):
         """
         Netmiko is being used to commit the rollback configuration because
         it takes a better care of results compared to pan-python.
@@ -471,7 +471,7 @@ class PANOSDriver(NetworkDriver):
             if self.ssh_connection is False:
                 self._open_ssh()
             try:
-                self.ssh_device.commit()
+                self.ssh_device.commit(comment=message, **kwargs)
                 self.loaded = False
                 self.changed = False
                 self.merge_config = False
